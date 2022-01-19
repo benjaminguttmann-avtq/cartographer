@@ -118,6 +118,10 @@ func TemplateStampFailureByObservedGenerationCondition(err error) metav1.Conditi
 		Type:    v1alpha1.DeliverableResourcesSubmitted,
 		Status:  metav1.ConditionFalse,
 		Reason:  v1alpha1.TemplateStampFailureResourcesSubmittedReason,
+		// FIXME Type assertions without ok are bad
+		// 	Why are there no lint rules to warn for this?
+		//  Just change the signature err type, this method is called by a type assertion switch statement
+		//  Is the type assertion switch statement better extracted as a factory?
 		Message: fmt.Sprintf("resource [%s] cannot satisfy observedCompletion without observedGeneration in object status", err.(deliverable.RetrieveOutputError).ResourceName()),
 	}
 }
@@ -127,6 +131,7 @@ func DeploymentConditionNotMetCondition(err error) metav1.Condition {
 		Type:    v1alpha1.DeliverableResourcesSubmitted,
 		Status:  metav1.ConditionUnknown,
 		Reason:  v1alpha1.DeploymentConditionNotMetResourcesSubmittedReason,
+		// FIXME .err.Error() goes around RetrieveOutputError#Error, which I don't think even get's called?
 		Message: fmt.Sprintf("resource [%s] condition not met: %s", err.(deliverable.RetrieveOutputError).ResourceName(), err.(deliverable.RetrieveOutputError).Err.Error()),
 	}
 }
