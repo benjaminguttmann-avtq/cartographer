@@ -6,7 +6,9 @@ import monacoEditorPlugin from "vite-plugin-monaco-editor"
 export default defineConfig({
     plugins: [
         svelte(),
-        monacoEditorPlugin.default()
+        monacoEditorPlugin.default({
+           languageWorkers:['editorWorkerService']
+        }),
     ],
     clearScreen: false
 })
