@@ -97,7 +97,7 @@ var _ = BeforeSuite(func() {
 	// Can take a long time to start serving
 	// FIXME: use a real health check, not log line detection
 
-	Eventually(controllerBuffer, 10*time.Second).Should(gbytes.Say("Starting Controller"))
+	Eventually(controllerBuffer, 30*time.Second).Should(gbytes.Say("Starting Controller"))
 	time.Sleep(200 * time.Millisecond)
 
 	// --- create client

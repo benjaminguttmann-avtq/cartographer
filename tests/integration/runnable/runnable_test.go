@@ -182,7 +182,7 @@ var _ = Describe("Stamping a resource on Runnable Creation", func() {
 				Consistently(func() (int, error) {
 					err := c.List(ctx, resourceList, &client.ListOptions{Namespace: testNS})
 					return len(resourceList.Items), err
-				}, "2s").Should(BeNumerically("<=", 1))
+				}, "1s").Should(BeNumerically("<=", 1))
 
 				Expect(resourceList.Items[0].Name).To(ContainSubstring("my-stamped-resource-"))
 				Expect(resourceList.Items[0].Spec.ScopeSelector.MatchExpressions[0].Values).To(ConsistOf("val"))
@@ -199,12 +199,12 @@ var _ = Describe("Stamping a resource on Runnable Creation", func() {
 					Eventually(func() (int, error) {
 						err := c.List(ctx, resourceList, &client.ListOptions{Namespace: testNS})
 						return len(resourceList.Items), err
-					}, "3s").Should(Equal(2))
+					}, "1s").Should(Equal(2))
 
 					Consistently(func() (int, error) {
 						err := c.List(ctx, resourceList, &client.ListOptions{Namespace: testNS})
 						return len(resourceList.Items), err
-					}, "2s").Should(Equal(2))
+					}, "1s").Should(Equal(2))
 
 					Expect(resourceList.Items[0].Name).To(ContainSubstring("my-stamped-resource-"))
 					Expect(resourceList.Items[1].Name).To(ContainSubstring("my-stamped-resource-"))
@@ -232,7 +232,7 @@ var _ = Describe("Stamping a resource on Runnable Creation", func() {
 					Consistently(func() (int, error) {
 						err := c.List(ctx, resourceList, &client.ListOptions{Namespace: testNS})
 						return len(resourceList.Items), err
-					}, "2s").Should(BeNumerically("<=", 1))
+					}, "1s").Should(BeNumerically("<=", 1))
 
 					Expect(AlterFieldOfNestedStringMaps(runTemplateDefinition.Object, "spec.template.metadata.labels.focus", "other-things")).To(Succeed())
 					Expect(c.Update(ctx, runTemplateDefinition, &client.UpdateOptions{})).To(Succeed())
@@ -245,7 +245,7 @@ var _ = Describe("Stamping a resource on Runnable Creation", func() {
 					Consistently(func() (int, error) {
 						err := c.List(ctx, resourceList, &client.ListOptions{Namespace: testNS})
 						return len(resourceList.Items), err
-					}, "2s").Should(BeNumerically("<=", 2))
+					}, "1s").Should(BeNumerically("<=", 2))
 
 					Expect(resourceList.Items[0].Name).To(ContainSubstring("my-stamped-resource-"))
 					Expect(resourceList.Items[1].Name).To(ContainSubstring("my-stamped-resource-"))
@@ -412,7 +412,7 @@ var _ = Describe("Stamping a resource on Runnable Creation", func() {
 					Consistently(func() (int, error) {
 						err := c.List(ctx, resourceList, &client.ListOptions{Namespace: testNS})
 						return len(resourceList.Items), err
-					}, "2s").Should(BeNumerically("<=", 1))
+					}, "1s").Should(BeNumerically("<=", 1))
 
 					Expect(resourceList.Items[0].Name).To(ContainSubstring("my-stamped-resource-"))
 					Expect(resourceList.Items[0].Spec.ScopeSelector.MatchExpressions[0].Values).To(ConsistOf("polo-production-stage"))
@@ -471,7 +471,7 @@ var _ = Describe("Stamping a resource on Runnable Creation", func() {
 					Consistently(func() (int, error) {
 						err := c.List(ctx, resourceList, &client.ListOptions{Namespace: testNS})
 						return len(resourceList.Items), err
-					}, "2s").Should(BeNumerically("<=", 1))
+					}, "1s").Should(BeNumerically("<=", 1))
 
 					Expect(resourceList.Items[0].Name).To(ContainSubstring("my-stamped-resource-"))
 					Expect(resourceList.Items[0].Spec.ScopeSelector.MatchExpressions[0].Values).To(ConsistOf("polo-production-stage"))
@@ -550,7 +550,7 @@ var _ = Describe("Stamping a resource on Runnable Creation", func() {
 					Consistently(func() (int, error) {
 						err := c.List(ctx, resourceList, &client.ListOptions{Namespace: testNS})
 						return len(resourceList.Items), err
-					}, "2s").Should(BeNumerically("<=", 1))
+					}, "1s").Should(BeNumerically("<=", 1))
 
 					Expect(resourceList.Items[0].Name).To(ContainSubstring("my-stamped-resource-"))
 					Expect(resourceList.Items[0].Spec.ScopeSelector.MatchExpressions[0].Values).To(ConsistOf("polo-production-stage"))
