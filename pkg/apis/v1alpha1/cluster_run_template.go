@@ -47,6 +47,8 @@ type RunTemplateSpec struct {
 	// Outputs are a named list of jsonPaths that are used to gather results
 	// from the last successful object stamped by the template.
 	// E.g: 	my-output: .status.results[?(@.name=="IMAGE-DIGEST")].value
+	// Note: outputs are only filled on the runnable when the templated object's
+	// status.conditions[?(@.type=="Succeeded")].status == True
 	// +optional
 	Outputs map[string]string `json:"outputs,omitempty"`
 }
