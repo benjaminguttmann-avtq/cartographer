@@ -58,6 +58,9 @@ type Runnable struct {
 type RunnableStatus struct {
 	ObservedGeneration int64                           `json:"observedGeneration,omitempty"`
 	Conditions         []metav1.Condition              `json:"conditions,omitempty"`
+	// Note: outputs are only filled on the runnable when the templated object's
+	// status.conditions[?(@.type=="Succeeded")].status == True
+	// +optional
 	Outputs            map[string]apiextensionsv1.JSON `json:"outputs,omitempty"`
 }
 
