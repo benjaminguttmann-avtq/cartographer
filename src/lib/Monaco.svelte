@@ -6,6 +6,7 @@
     import YamlWorker from '../monaco-yaml/yaml.worker?worker';
     import TsWorker from 'monaco-editor/esm/vs/language/typescript/ts.worker?worker';
     import EditorWorker from 'monaco-editor/esm/vs/editor/editor.worker?worker';
+    import {startupDoc} from "./startup.js";
 
     let inst
     let editorContainer
@@ -66,21 +67,12 @@
         ],
     });
 
-    const defaultText = ["---",
-        "hi: there",
-        "test: syntax",
-        "  - this: should",
-        "    be: an",
-        "    be: error",
-    ]
 
     onMount(() => {
         inst = editor.create(editorContainer,
             {
                 automaticLayout: true,
-                // value: defaultText.join("\n"),
-                // language: "yaml",
-                model: editor.createModel(defaultText.join("\n"), 'yaml', modelUri),
+                model: editor.createModel(startupDoc, 'yaml', modelUri),
             },
         )
 
