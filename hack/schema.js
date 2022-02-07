@@ -12,9 +12,7 @@ let schema = {
             "description": "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
             "type": "string"
         },
-        "metadata": {
-            "type": "object"
-        },
+        "metadata": {"type": "object"},
         "spec": {
             "description": "Spec describes the suppply chain. More info: https://cartographer.sh/docs/latest/reference/workload/#clustersupplychain",
             "properties": {
@@ -34,11 +32,7 @@ let schema = {
                                 "description": "Value of the parameter. If specified, owner properties are ignored.",
                                 "x-kubernetes-preserve-unknown-fields": true
                             }
-                        },
-                        "required": [
-                            "name"
-                        ],
-                        "type": "object"
+                        }, "required": ["name"], "type": "object"
                     },
                     "type": "array"
                 },
@@ -49,18 +43,8 @@ let schema = {
                             "configs": {
                                 "description": "Configs is a list of references to other 'config' resources in this list. A config resource has the kind ClusterConfigTemplate \n In a template, configs can be consumed as: $(configs.<name>.config)$ \n If there is only one image, it can be consumed as: $(config)$",
                                 "items": {
-                                    "properties": {
-                                        "name": {
-                                            "type": "string"
-                                        },
-                                        "resource": {
-                                            "type": "string"
-                                        }
-                                    },
-                                    "required": [
-                                        "name",
-                                        "resource"
-                                    ],
+                                    "properties": {"name": {"type": "string"}, "resource": {"type": "string"}},
+                                    "required": ["name", "resource"],
                                     "type": "object"
                                 },
                                 "type": "array"
@@ -68,18 +52,8 @@ let schema = {
                             "images": {
                                 "description": "Images is a list of references to other 'image' resources in this list. An image resource has the kind ClusterImageTemplate \n In a template, images can be consumed as: $(images.<name>.image)$ \n If there is only one image, it can be consumed as: $(image)$",
                                 "items": {
-                                    "properties": {
-                                        "name": {
-                                            "type": "string"
-                                        },
-                                        "resource": {
-                                            "type": "string"
-                                        }
-                                    },
-                                    "required": [
-                                        "name",
-                                        "resource"
-                                    ],
+                                    "properties": {"name": {"type": "string"}, "resource": {"type": "string"}},
+                                    "required": ["name", "resource"],
                                     "type": "object"
                                 },
                                 "type": "array"
@@ -104,29 +78,15 @@ let schema = {
                                             "description": "Value of the parameter. If specified, owner properties are ignored.",
                                             "x-kubernetes-preserve-unknown-fields": true
                                         }
-                                    },
-                                    "required": [
-                                        "name"
-                                    ],
-                                    "type": "object"
+                                    }, "required": ["name"], "type": "object"
                                 },
                                 "type": "array"
                             },
                             "sources": {
                                 "description": "Sources is a list of references to other 'source' resources in this list. A source resource has the kind ClusterSourceTemplate \n In a template, sources can be consumed as: $(sources.<name>.url)$ and $(sources.<name>.revision)$ \n If there is only one source, it can be consumed as: $(source.url)$ and $(source.revision)$",
                                 "items": {
-                                    "properties": {
-                                        "name": {
-                                            "type": "string"
-                                        },
-                                        "resource": {
-                                            "type": "string"
-                                        }
-                                    },
-                                    "required": [
-                                        "name",
-                                        "resource"
-                                    ],
+                                    "properties": {"name": {"type": "string"}, "resource": {"type": "string"}},
+                                    "required": ["name", "resource"],
                                     "type": "object"
                                 },
                                 "type": "array"
@@ -136,12 +96,7 @@ let schema = {
                                 "properties": {
                                     "kind": {
                                         "description": "Kind of the template to apply",
-                                        "enum": [
-                                            "ClusterSourceTemplate",
-                                            "ClusterImageTemplate",
-                                            "ClusterTemplate",
-                                            "ClusterConfigTemplate"
-                                        ],
+                                        "enum": ["ClusterSourceTemplate", "ClusterImageTemplate", "ClusterTemplate", "ClusterConfigTemplate"],
                                         "type": "string"
                                     },
                                     "name": {
@@ -150,25 +105,15 @@ let schema = {
                                         "type": "string"
                                     }
                                 },
-                                "required": [
-                                    "kind",
-                                    "name"
-                                ],
+                                "required": ["kind", "name"],
                                 "type": "object"
                             }
-                        },
-                        "required": [
-                            "name",
-                            "templateRef"
-                        ],
-                        "type": "object"
+                        }, "required": ["name", "templateRef"], "type": "object"
                     },
                     "type": "array"
                 },
                 "selector": {
-                    "additionalProperties": {
-                        "type": "string"
-                    },
+                    "additionalProperties": {"type": "string"},
                     "description": "Specifies the label key-value pairs used to select workloads See: https://cartographer.sh/docs/v0.1.0/architecture/#selectors",
                     "type": "object"
                 },
@@ -184,26 +129,18 @@ let schema = {
                             "type": "string"
                         }
                     },
-                    "required": [
-                        "name"
-                    ],
+                    "required": ["name"],
                     "type": "object"
                 }
             },
-            "required": [
-                "resources",
-                "selector"
-            ],
+            "required": ["resources", "selector"],
             "type": "object"
-        },
-    },
-    "required": [
-        "metadata",
-        "spec"
-    ],
-    "type": "object"
+        }
+    }, "required": ["metadata", "spec"],
+    "type": "object",
+    "$schema": "http://json-schema.org/draft-04/schema#"
 };
 
 let convertedSchema = toJsonSchema(schema);
 
-console.log(convertedSchema);
+console.log(JSON.stringify(convertedSchema));
