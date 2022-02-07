@@ -1,5 +1,7 @@
 
 # Notes
 
-Json Schema from our CRD schema:
-* https://github.com/openapi-contrib/openapi-schema-to-json-schema
+Grab the schema with: 
+```
+cat config/crd/bases/carto.run_clustersupplychains.yaml | yq '.spec.versions[] | select(.name="v1alpha1") | .schema.openAPIV3Schema'
+```

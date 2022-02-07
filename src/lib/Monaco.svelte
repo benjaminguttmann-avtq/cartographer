@@ -1,96 +1,15 @@
 <script type="module">
 
     import {onMount} from "svelte";
-    import {setDiagnosticsOptions} from '../monaco-yaml';
     import {editor, Uri} from 'monaco-editor'
-    import YamlWorker from '../monaco-yaml/yaml.worker?worker';
-    import TsWorker from 'monaco-editor/esm/vs/language/typescript/ts.worker?worker';
-    import EditorWorker from 'monaco-editor/esm/vs/editor/editor.worker?worker';
     import {startupDoc} from "./startup.js";
 
     let inst
     let editorContainer
 
-    // https://github.com/remcohaszing/monaco-yaml/blob/f42c5e97e02e3355a5002bb54a6efbf29174a855/index.d.ts#L29
-    setDiagnosticsOptions({
-        enableSchemaRequest: true,
-        hover: true,
-        completion: true,
-        validate: true,
-        format: true,
-        schemas: [
-            {
-                uri: 'http://cartographer.sh/foo-schema.json',
-                // Associate with our model
-                fileMatch: ["*.yaml"],
-                schema: {
-                    type: 'object',
-                    properties: {
-                        p1: {
-                            enum: ['v1', 'v2'],
-                        },
-                    },
-                },
-            },
-        ],
-    });
-
-    window.MonacoEnvironment = {
-        getWorker(moduleId, label) {
-            switch (label) {
-                case 'yaml':
-                    return new YamlWorker();
-                case 'javascript':
-                    return new TsWorker();
-                default:
-                    return new EditorWorker();
-            }
-        },
-    };
 
     // The uri is used for the schema file match.
-    const modelUri = Uri.parse('a://b/foo.yaml');
-
-    setDiagnosticsOptions({
-        enableSchemaRequest: true,
-        hover: true,
-        completion: true,
-        validate: true,
-        format: true,
-        schemas: [
-            {
-                // Id of the first schema
-                uri: 'http://myserver/foo-schema.json',
-                // Associate with our model
-                fileMatch: [String(modelUri)],
-                schema: {
-                    type: 'object',
-                    properties: {
-                        p1: {
-                            enum: ['v1', 'v2'],
-                        },
-                        p2: {
-                            // Reference the second schema
-                            $ref: 'http://myserver/bar-schema.json',
-                        },
-                    },
-                },
-            },
-            {
-                // Id of the first schema
-                uri: 'http://myserver/bar-schema.json',
-                schema: {
-                    type: 'object',
-                    properties: {
-                        q1: {
-                            enum: ['x1', 'x2'],
-                        },
-                    },
-                },
-            },
-        ],
-    });
-
+    const modelUri = Uri.parse('https://cartographer.sh/example_sc_1.yaml');
 
     onMount(() => {
         inst = editor.create(editorContainer,
