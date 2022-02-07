@@ -11,6 +11,30 @@
     let inst
     let editorContainer
 
+    // https://github.com/remcohaszing/monaco-yaml/blob/f42c5e97e02e3355a5002bb54a6efbf29174a855/index.d.ts#L29
+    setDiagnosticsOptions({
+        enableSchemaRequest: true,
+        hover: true,
+        completion: true,
+        validate: true,
+        format: true,
+        schemas: [
+            {
+                uri: 'http://cartographer.sh/foo-schema.json',
+                // Associate with our model
+                fileMatch: ["*.yaml"],
+                schema: {
+                    type: 'object',
+                    properties: {
+                        p1: {
+                            enum: ['v1', 'v2'],
+                        },
+                    },
+                },
+            },
+        ],
+    });
+
     window.MonacoEnvironment = {
         getWorker(moduleId, label) {
             switch (label) {
