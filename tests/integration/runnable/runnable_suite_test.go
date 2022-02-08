@@ -25,6 +25,7 @@ import (
 	. "github.com/onsi/gomega"
 	"github.com/onsi/gomega/gbytes"
 	"github.com/onsi/gomega/gexec"
+	"go.uber.org/zap/zapcore"
 	corev1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime"
@@ -53,10 +54,17 @@ var (
 	cancel           context.CancelFunc
 	controllerError  chan error
 	controller       *cmd.Command
-	controllerBuffer *gbytes.Buffer
+	controllerBuffer  *gbytes.Buffer
+	serverWaitTimeout string
 )
 
 var _ = BeforeSuite(func() {
+
+	serverWaitTimeout = "1s"
+	if os.Getenv("WAIT_FOR_SERVER") == "true" {
+		serverWaitTimeout ="10s"
+	}
+
 	var err error
 	workingDir, err = os.Getwd()
 	Expect(err).NotTo(HaveOccurred())
@@ -79,7 +87,15 @@ var _ = BeforeSuite(func() {
 
 	controllerBuffer = gbytes.NewBuffer()
 	controllerOutput := io.MultiWriter(controllerBuffer, GinkgoWriter)
-	logger := zap.New(zap.WriteTo(controllerOutput))
+	//loggerOpt, err := logger2.SetLogLevel("debug")
+	//if err != nil {
+	//	panic(err)
+	//}
+	//zap.WriteTo(controllerOutput),
+	logger := zap.New(zap.UseFlagOptions(&zap.Options{
+		Level: zapcore.DebugLevel,
+		DestWriter: controllerOutput,
+	}))
 
 	controllerError = make(chan error)
 
