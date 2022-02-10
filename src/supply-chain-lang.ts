@@ -3,10 +3,28 @@ import {CompletionItemKind, integer} from "vscode-languageserver-types";
 import ITextModel = editor.ITextModel;
 
 import {parse, stringify} from 'yaml'
+import {upperCaseFirst} from "upper-case-first";
 
-const isInResource = (model: ITextModel, lineNumber: integer) => {
+const resourceGroupRE = /(config|image|source)s:/
+
+const inResourceKind = (model: ITextModel, lineNumber: integer) => {
     let line = model.getLineContent(lineNumber)
-    return line.search(/\s+resource:/) >= 0
+    let resourcePos = line.search(/\s+resource:/)
+    if (resourcePos < 0) {
+        return null
+    }
+
+    let searchLineNumber = lineNumber
+
+    while (--searchLineNumber > 0) {
+        let searchLine = model.getLineContent(searchLineNumber)
+        let matches = searchLine.match(resourceGroupRE)
+        if (matches) {
+            return `Cluster${upperCaseFirst(matches[1])}Template`
+        }
+    }
+
+    return null
 }
 
 
@@ -39,11 +57,11 @@ export const AddSupplyChainLang = () => {
             // triggerCharacters: [' ', ':'],
             triggerCharacters: [' '],
             provideCompletionItems(model, position) {
-                let inResource = isInResource(model, position.lineNumber)
-                if (inResource) {
+                let resourceKind = inResourceKind(model, position.lineNumber)
+                if (resourceKind) {
                     return {
                         incomplete: false,
-                        suggestions: getSuggestions(model, "ClusterConfigTemplate"),
+                        suggestions: getSuggestions(model, resourceKind),
                     };
                 } else {
                     return null
