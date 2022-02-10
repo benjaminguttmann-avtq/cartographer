@@ -9,8 +9,11 @@
 * Pako style compact URL with saving
 * Visualiser for Supply Chain
 * Autocomplete for resources
+  * Don't show forward references (or self references)
+  * Type validation for references
 * Host it somewhere. Hugo seems inordinately painful for this, but I could be co-erced
 * document build and delivery process to update the editor wherever it lands
+
 
 ### Near future
 
