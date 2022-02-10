@@ -3,6 +3,7 @@ import {setDiagnosticsOptions} from "./monaco-yaml/index.js";
 import YamlWorker from './monaco-yaml/yaml.worker?worker';
 import TsWorker from 'monaco-editor/esm/vs/language/typescript/ts.worker?worker';
 import EditorWorker from 'monaco-editor/esm/vs/editor/editor.worker?worker';
+import AddSupplyChainLang from "./supply-chain-lang";
 
 window.MonacoEnvironment = {
     getWorker(moduleId, label) {
@@ -228,6 +229,7 @@ setDiagnosticsOptions({
     ],
 });
 
+AddSupplyChainLang()
 
 const app = new App({
     target: document.getElementById('app')
