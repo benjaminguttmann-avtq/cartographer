@@ -14,6 +14,7 @@
     "@sveltejs/vite-plugin-svelte": "^1.0.0-next.30",
     "@types/json-schema": "^7.0.0",
     "jsonc-parser": "^3.0.0",
+    "mermaid": "^8.14.0",
     "monaco-editor": "^0.30.0",
     "monaco-yaml": "file:./src/monaco-yaml",
     "path-browserify": "^1.0.0",

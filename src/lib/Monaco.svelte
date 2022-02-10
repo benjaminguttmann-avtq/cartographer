@@ -2,11 +2,10 @@
 
     import {onMount} from "svelte";
     import {editor, Uri} from 'monaco-editor'
-    import {startupDoc} from "./startup.js";
 
     let inst
     let editorContainer
-
+    export let document
 
     // The uri is used for the schema file match.
     const modelUri = Uri.parse('https://cartographer.sh/example_sc_1.yaml');
@@ -15,10 +14,12 @@
         inst = editor.create(editorContainer,
             {
                 automaticLayout: true,
-                model: editor.createModel(startupDoc, 'yaml', modelUri),
+                model: editor.createModel(document, 'yaml', modelUri),
             },
         )
-
+        inst.onDidChangeModelContent = (e) => {
+            document = inst.getValue()
+        }
         // todo: destructor
     })
 

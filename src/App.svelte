@@ -1,11 +1,21 @@
 <script>
     import Monaco from "./lib/Monaco.svelte";
+    import Viz from "./lib/Viz.svelte";
+
+    import {startupDoc} from "./startup.js";
+
+    let document = startupDoc
+
 </script>
 
 <main>
     <h1>Cartographer Live Editor</h1>
 
-    <Monaco/>
+    <Monaco bind:document/>
+
+    <Viz>
+        {document}
+    </Viz>
 
 </main>
 
