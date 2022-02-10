@@ -1,25 +1,42 @@
 
-# Notes
+# Blueprint and Owner Live editor.
 
-Grab the schema with: 
-```
-cat config/crd/bases/carto.run_clustersupplychains.yaml | yq '.spec.versions[] | select(.name="v1alpha1") | .schema.openAPIV3Schema'
-```
+## Roadmap
 
-paste into [`./hack/schema.js`](./hack/schema.js)
+### Proof Of Concept
 
-then run 
-```
-./hack/schema.js  | pbcopy
-```
+* Supply chain editor (no delivery, workload or deliverable)
+* Pako style compact URL with saving
+* Visualiser for Supply Chain
+* Autocomplete for resources
+* Host it somewhere. Hugo seems inordinately painful for this, but I could be co-erced
+* document build and delivery process to update the editor wherever it lands
 
-and paste final schema into [`./src/main.js`](./src/main.js)
+### Near future
 
+* Finish the `scheming` tool that takes any CRD and produces a json schema
+  * This will make it easier to keep the editor up to date
 
+### Further Future
+ 
+* Workload with supply chain, including viz and param matching
+* Param autocomplete across files
+* Use a worker for the language extension
+* Do something about transpiling/packing, Vite hates Monaco-Yaml afaict
+* Automate build/deploy (perhaps at this point we get a dedicated repository?)
 
+# Howto
 
-# Final Plans (for blog post)
+## Updating the Schema today
 
-1. Create tool to generate and update schema's from a particular tag/sha of our CRDs
-   1. schema's should be posted with in the site next to the blog post 
-   2. Also support using current, unpublished schemas for local testing
+1. Grab the schema with:
+   ```
+   cat config/crd/bases/carto.run_clustersupplychains.yaml | yq '.spec.versions[] | select(.name="v1alpha1") | .schema.openAPIV3Schema'
+   ```
+2. paste into [`./hack/schema.js`](./hack/schema.js)
+3. then run 
+   ```
+   ./hack/schema.js  | pbcopy
+   ```
+
+4. and paste final schema into [`./src/main.js`](./src/main.js)
