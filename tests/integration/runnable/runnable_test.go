@@ -17,7 +17,6 @@ package runnable_test
 import (
 	"context"
 	"encoding/json"
-	"fmt"
 	"time"
 
 	. "github.com/onsi/ginkgo"
@@ -120,7 +119,6 @@ var _ = Describe("Stamping a resource on Runnable Creation", func() {
 					kind: ResourceQuota
 					metadata:
 					  generateName: my-stamped-resource-
-					  namespace: %s
 					  labels:
 					    focus: something-useful
 					spec:
@@ -134,7 +132,7 @@ var _ = Describe("Stamping a resource on Runnable Creation", func() {
 						  scopeName: PriorityClass
 						  values: [$(runnable.spec.inputs.key)$]
 				`,
-				testNS, testNS,
+				testNS,
 			)
 
 			runTemplateDefinition = createNamespacedObject(ctx, runTemplateYaml, testNS)
@@ -164,7 +162,11 @@ var _ = Describe("Stamping a resource on Runnable Creation", func() {
 					`,
 					testNS,testNS, serviceAccountName, testNS)
 
+				// Log the content of runnable yaml here
+
 				runnableDefinition = createNamespacedObject(ctx, runnableYaml, testNS)
+
+
 			})
 
 			AfterEach(func() {
@@ -229,12 +231,16 @@ var _ = Describe("Stamping a resource on Runnable Creation", func() {
 						return len(resourceList.Items), err
 					}, serverWaitTimeout).Should(Equal(1))
 
+
+					Expect(resourceList.Items[0].Labels["carto.run/runnable-name"]).To(Equal("my-runnable-" + testNS))
+
+
 					// Ensure that first object has been stamped, and status update reconcile of runnable has occurred
 					Consistently(func() (int, error) {
 						err := c.List(ctx, resourceList, &client.ListOptions{Namespace: testNS})
-						fmt.Printf("---------\nOMG: %+v\n", resourceList)
+						//fmt.Printf("---------\nOMG: %+v\n", resourceList)
 						return len(resourceList.Items), err
-					}, "20s").Should(BeNumerically("<=", 1))
+					}, "1s").Should(BeNumerically("<=", 1))
 
 					Expect(AlterFieldOfNestedStringMaps(runTemplateDefinition.Object, "spec.template.metadata.labels.focus", "other-things")).To(Succeed())
 					Expect(c.Update(ctx, runTemplateDefinition, &client.UpdateOptions{})).To(Succeed())
