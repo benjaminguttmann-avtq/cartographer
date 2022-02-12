@@ -13,9 +13,7 @@
 
     <Monaco bind:document/>
 
-    <Viz>
-        {document}
-    </Viz>
+    <Viz document={document}/>
 
 </main>
 

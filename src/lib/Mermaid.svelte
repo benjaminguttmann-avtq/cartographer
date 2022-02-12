@@ -6,13 +6,7 @@
 
     mermaid.initialize({
         startOnLoad: false,
-
         theme: 'forest',
-        gantt: { axisFormatter: [
-                ['%Y-%m-%d', (d) => {
-                    return d.getDay() === 1
-                }]
-            ] }
     });
 
     onMount(() => {
